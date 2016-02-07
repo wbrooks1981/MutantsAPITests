@@ -47,7 +47,7 @@ When(/^I update the term$/) do
 end
 
 Then(/^the term will be updated$/) do
-  raise "Term wasn't updated" if @term.create_date == @term.modified_date
+  raise "Term wasn't updated" if @term.created_date == @term.modified_date
 end
 
 When(/^I delete the term$/) do

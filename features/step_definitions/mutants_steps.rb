@@ -63,7 +63,7 @@ When(/^I update the mutant$/) do
 end
 
 Then(/^the mutant will be updated$/) do
-  raise "Mutant wasn't updated" if @mutant.create_date == @mutant.modified_date
+  raise "Mutant wasn't updated" if @mutant.created_date == @mutant.modified_date
 end
 
 Given(/^I don't have a mutant name$/) do
