@@ -3,7 +3,9 @@
 # You can create your own before/after/fail/pass hooks as needed
 # https://github.com/cucumber/cucumber/wiki/Hooks
 
+Before do
+end
+
 After do
-  @mutant.delete if @mutant && @mutant.id != nil
-  @term.delete if @term && @term.id != nil
+  MutantsAPIGem.clean_up
 end

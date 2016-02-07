@@ -87,33 +87,47 @@ Given(/^I don't have an ability$/) do
   @mutant.ability = nil
 end
 
-When(/^I enroll the mutant$/) do
-  @mutant.enroll(@term)
-end
-
-Given(/^I have mutant enrolled in a term$/) do
-  @term.create
-  @mutant.create
-  @enrollment = @mutant.enroll(@term)
-end
-
-When(/^I enroll the mutant in the term$/) do
-  @enrollment = @mutant.enroll(@term)
-  @response = MutantsAPIGem::Routes::Mutants.response if @enrollment.id.nil?
-end
-
-When(/^I retrieve all the enrollments for the mutant$/) do
-  @response = @mutant.enrollments
-end
-
-When(/^I retrieve the enrollment for the mutant$/) do
-  @response = @mutant.enrollments(@enrollment)
-end
-
 Given(/^A mutant's eligibility starts "([^"]*)"$/) do |start_date|
   @mutant.eligibility_begin_date = start_date
 end
 
 Given(/^A mutant's eligibility ends "([^"]*)"$/) do |end_date|
   @mutant.eligibility_end_date = end_date
+end
+
+Given(/^I have a mutant as an advisor/) do
+  @mutant = MutantsAPIGem::Mutant.new({ :alias                  => "Professor X",
+                                        :name                   => "Charles Xavier",
+                                        :ability                => "Telepathy",
+                                        :eligibility_begin_date => Date.today,
+                                        :eligibility_end_date   => Date.today + 30,
+                                        :advise_begin_date      => Date.today - 1 })
+  @mutant.create
+  raise "Mutant wasn't created" if @mutant.id.nil?
+  @advisor = @mutant
+end
+
+And(/^I have a mutant as a student$/) do
+  @mutant = MutantsAPIGem::Mutant.new({ :alias                  => "Cyclops",
+                                        :name                   => "Scott Summers",
+                                        :ability                => "Beams of energy from eyes",
+                                        :eligibility_begin_date => Date.today,
+                                        :eligibility_end_date   => Date.today + 30,
+                                        :advise_begin_date      => Date.today - 1 })
+  @mutant.create
+  raise "Mutant wasn't created" if @mutant.id.nil?
+  @student = @mutant
+end
+
+
+Given(/^I have a mutant who can advise in the future$/) do
+  @mutant = MutantsAPIGem::Mutant.new({ :alias                  => "Professor X",
+                                        :name                   => "Charles Xavier",
+                                        :ability                => "Telepathy",
+                                        :eligibility_begin_date => Date.today,
+                                        :eligibility_end_date   => Date.today + 30,
+                                        :advise_begin_date      => Date.today + 30 })
+  @mutant.create
+  raise "Mutant wasn't created" if @mutant.id.nil?
+  @advisor= @mutant
 end
